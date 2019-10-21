@@ -20,8 +20,8 @@ contract SecondAuction
     function Publickey(int _input) public {
         Publickey_p = uint(_input);
         pk_c = #upload_publickey_parameter;
-	      pk_B = #upload_publickey_parameter;
-	      alpha = #upload_publickey_parameter;
+        pk_B = #upload_publickey_parameter;
+        alpha = #upload_publickey_parameter;
 	}
 
     function e_mul(uint a, uint b) public view returns(uint) {
