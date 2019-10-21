@@ -1,0 +1,4 @@
+# Source files
+# ============
+*.sol linguist-language=Solidity
+*.js        text
