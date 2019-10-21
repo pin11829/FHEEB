@@ -2,7 +2,7 @@ pragma solidity >=0.4.21 <0.6.0;
 
 contract SecondAuction
 {
-    uint public time;   // Unix Time
+    uint public time;
     uint _output;
     uint Publickey_p;
     int alpha;
@@ -19,9 +19,9 @@ contract SecondAuction
     //Publickey
     function Publickey(int _input) public {
         Publickey_p = uint(_input);
-        pk_c = [9791176522104699692731950478411286858112051763163935465767553785801734161, 6351033419743588989880184094104618502341993742703701598511348132409432696, 6351033419743588989880184094104618502341993742703701598511348132409432697, 6351033419743588989880184094104618502341993742703701598511348132409432697, 3440143102361110702851766384306668355770058020460233867256205653392301465, 0];
-	      pk_B = [322474852018480305271628152733507702980070516803304596734724658171409378, -10523915499691265153705329001464953288334845016220057961169053650669365632, 31, 30, -664198988278543570808034666230281665638034885073520247226089567343301189, 2536068729340080277324643457837091293506332000996502024794909393630489967];
-	      alpha = 3175516709871794494940092047052309251170996871351850799255674066204716348;
+        pk_c = #upload_publickey_parameter;
+	      pk_B = #upload_publickey_parameter;
+	      alpha = #upload_publickey_parameter;
 	}
 
     function e_mul(uint a, uint b) public view returns(uint) {
@@ -60,8 +60,6 @@ contract SecondAuction
     function e_operation_sorting_bits(int [10][2] memory Bidder) public {
         e_sorting(Bidder);
         e_sorting(Bidder);
-        //e_sorting(Bidder);
-        //e_sorting(Bidder);
         emit timeStamper(time, msg.sender, uint(Bidder[0][0]));
     }
 
@@ -70,22 +68,22 @@ contract SecondAuction
         uint i;
         uint beta;
         //merger three matriz
-        uint [10] memory Inverse_array = [uint(9791176522104699692731950478411286858112051763163935465767553785801734162), uint(3440143102361110702851766384306668355770058020460233867256205653392301466), uint(3440143102361110702851766384306668355770058020460233867256205653392301466), uint(3440143102361110702851766384306668355770058020460233867256205653392301466), uint(9791176522104699692731950478411286858112051763163935465767553785801734162), uint(3440143102361110702851766384306668355770058020460233867256205653392301466), uint(9791176522104699692731950478411286858112051763163935465767553785801734162), uint(9791176522104699692731950478411286858112051763163935465767553785801734162), uint(1), uint(6351033419743588989880184094104618502341993742703701598511348132409432697)];
-        uint [10] memory Ones_array = [uint(0), uint(6351033419743588989880184094104618502341993742703701598511348132409432696), uint(0), uint(9791176522104699692731950478411286858112051763163935465767553785801734161), uint(3440143102361110702851766384306668355770058020460233867256205653392301465), uint(6351033419743588989880184094104618502341993742703701598511348132409432696), uint(9791176522104699692731950478411286858112051763163935465767553785801734161), uint(3440143102361110702851766384306668355770058020460233867256205653392301465), uint(6351033419743588989880184094104618502341993742703701598511348132409432696), uint(6351033419743588989880184094104618502341993742703701598511348132409432697)];
+        uint [10] memory Inverse_array = [encrypt_pk(1), encrypt_pk(1), encrypt_pk(1), encrypt_pk(1), encrypt_pk(1), encrypt_pk(1), encrypt_pk(1), encrypt_pk(1), encrypt_pk(1), encrypt_pk(1)];
+        uint [10] memory Ones_array = [encrypt_pk(0), encrypt_pk(0), encrypt_pk(0), encrypt_pk(0), encrypt_pk(0), encrypt_pk(0), encrypt_pk(0), encrypt_pk(0), encrypt_pk(0), encrypt_pk(1)];
         uint [10] memory Temp_array = [uint(0), uint(0), uint(0), uint(0), uint(0), uint(0), uint(0), uint(0), uint(0), uint(0)];
         for(i=0; i<10; i++){
             Temp_array[9-i] = e_add(Inverse_array[9-i], uint(b[9-i]));
-        }//20w
+        }
         c_out = encrypt_pk(0);
         for(i=0; i<10; i++){
             (Temp_array[9-i], c_out) = e_full_add(Temp_array[9-i], Ones_array[9-i], c_out);
             c_out = recrypt(c_out);
-        }//20w + 200w
+        }
         c_out = encrypt_pk(0);
         for(i=0; i<10; i++){
             (beta, c_out) = e_full_add(uint(a[9-i]), Temp_array[9-i], c_out);
             c_out = recrypt(c_out);
-        }//20w + 200w
+        }
         return beta;
     }
 
@@ -107,7 +105,7 @@ contract SecondAuction
                 }
 
                 //1-beta = sum
-                c_one = 9791176522104699692731950478411286858112051763163935465767553785801734162;//Encrypt 1
+                c_one = encrypt_pk(1);//Encrypt 1
                 sum = e_add(c_one, beta);
                 //(1-beta)*B
                 for(k=0; k<10; k++){
@@ -139,7 +137,7 @@ contract SecondAuction
     }
 
     function recrypt(uint ciphertext) public view returns(uint) {
-        uint [3][6] memory C = [[uint(0), uint(1), uint(0)], [uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0)]];
+        uint [3][6] memory C = [[uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0)]];
         uint [5][5] memory H = [[uint(0), uint(0), uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0), uint(0), uint(0)], [uint(0), uint(0), uint(0), uint(0), uint(0)]];
         uint temp;
         int pk_B_temp;
@@ -166,7 +164,7 @@ contract SecondAuction
             hcf = numerator;
             numerator = (temp/hcf)*1000;
             denominator = Publickey_p/hcf;
-            //q = numerator / denominator;//Problem: we need floating point
+            //q = numerator / denominator;
             q = (numerator / denominator) / 1000;
             q1 = (((numerator / denominator) - (q*1000))*2) / 1000;
             temp = ((((numerator / denominator) - q*1000)*2 - q1*1000)*2) / 1000;
@@ -210,14 +208,12 @@ contract SecondAuction
         }
         // leftshift the row with the carry bits
         (H[3][2], H[0][2]) = (H[0][2], H[3][2]);//2 = SCARAB_T-1
-        H[1][2] = 6351033419743588989880184094104618502341993742703701598511348132409432696;//2 = SCARAB_T-1
+        H[1][2] = encrypt_pk(0);//2 = SCARAB_T-1
         for(j=0; j<2; j++){//2 = SCARAB_T-1
             (H[3][j], H[0][j]) = (H[0][j], H[3][j]);
             (H[1][j], H[4][j+1]) = (H[4][j+1], H[1][j]);
         }
         // ripple-carry-add rows 0 and 1 --> 0 (LSB at SCARAB_T-1)
-        // special cases: nothing to do for col SCARAB_T-1, halfadder for SCARAB_T-2
-        // note: carry is in temp, result in last row (4)
         (H[4][1], temp) = e_half_add(H[0][1], H[1][1]);//1 = SCARAB_T-2
         (H[4][0], temp) = e_full_add(H[0][0], H[1][0], temp);
         temp = addmod(H[4][0], H[4][1], Publickey_p);
