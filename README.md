@@ -1,4 +1,4 @@
-# A Study of the Applicability of Ideal Lattice-Based Fully Homomorphic Encryption Scheme to Ethereum Blockchain
+# Appendice of A Study of the Applicability of Ideal Lattice-Based Fully Homomorphic Encryption Scheme to Ethereum Blockchain
 
 ## Appendix A
   * Error Estimation
